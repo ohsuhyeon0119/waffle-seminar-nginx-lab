@@ -1,6 +1,9 @@
 services:
   nginx:
     image: docker.io/library/nginx:alpine
+    # nginx exits at startup if the active color's hostname cannot be resolved yet
+    # (e.g. when both containers start at the same moment), so let Docker retry.
+    restart: unless-stopped
     ports:
       - "80:80"
     volumes:
