@@ -1,0 +1,22 @@
+services:
+  nginx:
+    image: docker.io/library/nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:ro,Z
+      - ./html:/usr/share/nginx/html:ro,Z
+    depends_on:
+      - app1
+      - app2
+
+  # Two containers from the same image; only APP_NAME differs.
+  app1:
+    image: seminar-app:latest
+    environment:
+      APP_NAME: app1
+
+  app2:
+    image: seminar-app:latest
+    environment:
+      APP_NAME: app2

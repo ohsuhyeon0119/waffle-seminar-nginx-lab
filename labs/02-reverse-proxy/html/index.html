@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+button { font-size: 1em; padding: 0.4em 1em; }
+pre { padding: 0.8em; border: 1px solid gray; min-height: 1.2em; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>This page is served by nginx as a static file.
+The button below calls <code>/api/hello</code>, which nginx forwards to the Spring backend.</p>
+
+<!-- Updated on page load and on every call. -->
+<p>Backend version: <strong id="version">-</strong>
+(answered by <strong id="name">-</strong>)</p>
+
+<button id="call">Call backend</button>
+<button id="clear">Clear</button>
+
+<!-- One line is added per call, newest first. -->
+<pre id="result"></pre>
+
+<script>
+  const result = document.getElementById('result');
+  const version = document.getElementById('version');
+  const name = document.getElementById('name');
+
+  async function callBackend() {
+    let line;
+    try {
+      const res = await fetch('/api/hello', { cache: 'no-store' });
+      if (res.ok) {
+        const body = await res.json();
+        version.textContent = body.version;
+        name.textContent = body.name;
+        line = JSON.stringify(body);
+      } else {
+        line = 'HTTP ' + res.status;
+      }
+    } catch (e) {
+      line = 'request failed: ' + e.message;
+    }
+    result.textContent = line + '\n' + result.textContent;
+  }
+
+  document.getElementById('call').addEventListener('click', callBackend);
+  callBackend();
+
+  document.getElementById('clear').addEventListener('click', () => {
+    result.textContent = '';
+  });
+</script>
+</body>
+</html>

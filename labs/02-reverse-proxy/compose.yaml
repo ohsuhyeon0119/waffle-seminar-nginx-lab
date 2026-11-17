@@ -1,0 +1,16 @@
+services:
+  nginx:
+    image: docker.io/library/nginx:alpine
+    ports:
+      - "80:80"                               # the only port exposed to the outside
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:ro,Z        # replaces the default nginx config
+      - ./html:/usr/share/nginx/html:ro,Z     # replaces the default welcome page
+    depends_on:
+      - app
+
+  app:
+    image: seminar-app:latest
+    environment:
+      APP_NAME: app
+    # No "ports": the backend is reachable only through nginx.

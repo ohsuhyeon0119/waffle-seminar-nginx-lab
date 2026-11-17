@@ -1,0 +1,21 @@
+services:
+  nginx:
+    image: docker.io/library/nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      # Read-only inside the container; deploy.sh edits nginx/upstream.inc on the host.
+      - ./nginx:/etc/nginx/conf.d:ro,Z
+      - ./html:/usr/share/nginx/html:ro,Z
+
+  # Same image for both colors. Only one of them runs at a time,
+  # except during a deployment when both are up.
+  blue:
+    image: seminar-app:latest
+    environment:
+      APP_NAME: blue
+
+  green:
+    image: seminar-app:latest
+    environment:
+      APP_NAME: green
