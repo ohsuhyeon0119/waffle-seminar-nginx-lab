@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.InetAddress
 
 // Change this string and push to trigger a new deployment (lab 4).
-const val MESSAGE = "Hello from Spring"
+const val MESSAGE = "Hello from bye"
 
 @SpringBootApplication
 class LabApplication
